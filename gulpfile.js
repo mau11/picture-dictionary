@@ -1,0 +1,58 @@
+const gulp = require('gulp');
+const gutil = require('gulp-util');
+const webpackStream = require('webpack-stream');
+const webpack = require('webpack');
+const path = require('path');
+const del = require('del');
+const webpackDevServer = require('webpack-dev-server');
+const commonConfig = require('./commonConfig');
+const paths = commonConfig.paths;
+const options = commonConfig.options;
+
+function build() {
+  gutil.log('Building the dist files . . .');
+  return gulp.src(paths.entryTS)
+    .pipe(webpackStream(require(paths.webpackConfig), webpack))
+    .pipe(gulp.dest(paths.dest));
+}
+
+function clean() {
+  gutil.log('Cleaning the dist files . . .');
+  return del([ paths.dest ]);
+}
+
+function copy() {
+  gutil.log('Copying index.html file . . .')
+  return gulp.src(paths.entryHTML)
+    .pipe(gulp.dest(paths.dest));
+}
+
+function eventLog(watchers) {
+  watchers.forEach((watcher) => {
+    watcher.on('change', (file) => {
+      gutil.log('File ' + file + ' was changed, running tasks...');
+    });
+  });
+}
+
+function watch() {
+  gutil.log('Watching source files for changes . . .');
+  const watchSrcTS = gulp.watch(paths.srcTS, build);
+  const watchEntryHTML = gulp.watch(paths.entryHTML, copy);
+  eventLog([ watchSrcTS, watchEntryHTML ]);
+}
+
+function server() {
+  gutil.log('Starting up the dev server . . .');
+  new webpackDevServer(webpack(require(paths.webpackConfig)), {
+    publicPath: paths.dest
+  })
+  .listen(options.port, 'localhost', (error) => {
+    if(error) throw new gutil.PluginError('webpack-dev-server', error);
+    // Server listening
+    gutil.log('[webpack-dev-server]', 'http://localhost:' + options.port + '/' + paths.dest + 'index.html');
+  });
+}
+
+// gulp.task('default', [ 'clean', 'build', 'watch' ]);
+gulp.task('default', gulp.series(clean, gulp.parallel(build, copy), gulp.parallel(server, watch)));
