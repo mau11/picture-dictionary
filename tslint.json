@@ -1,0 +1,30 @@
+{
+  "rules": {
+    "eofline": true,
+    "indent": {
+      "options": [ "spaces" ]
+    },
+    "no-trailing-whitespace": true,
+    "no-var-keyword": true,
+    "prefer-const": true,
+    "semicolon": [ true, "always" ],
+    "curly": true,
+    "no-bitwise": true,
+    "no-conditional-assignment": true,
+    "no-console": true,
+    "no-debugger": true,
+    "no-eval": true,
+    "no-invalid-this": true,
+    "no-shadowed-variable": true,
+    "no-string-throw": true,
+    "no-switch-case-fall-through": true,
+    "no-unsafe-finally": true,
+    "no-unused-expression": true,
+    "no-use-before-declare": false,
+    "no-var-keyword": true,
+    "only-arrow-functions": true,
+    "triple-equals": [true, "allow-null-check"],
+    "typeof-compare": true,
+    "use-isnan": true
+  }
+}
