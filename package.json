@@ -24,6 +24,7 @@
     "chai": "3.5.0",
     "del": "2.2.2",
     "gulp": "github:gulpjs/gulp#4.0",
+    "gulp-tslint": "8.1.0",
     "gulp-util": "3.0.8",
     "mocha": "3.4.1",
     "path": "0.12.7",
